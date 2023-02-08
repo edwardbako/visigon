@@ -1,0 +1,14 @@
+#notice {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  opacity: 90%;
+
+  // &.hidden {
+  //   visibility: hidden;
+  //   opacity: 30%;
+  //   transition: visibility 5s, opacity 10s;
+
+  // }
+}

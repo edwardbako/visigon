@@ -1,2 +1,16 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+@import 'notice';
+@import 'navbar';
+
+.translation_missing {
+  color: $red;
+  background-color: $red-100;
+
+  box-shadow: 5px 5px 5px $red-200;
+
+  &:before {
+    content: "\F337 \00a0";
+    font-family: "bootstrap-icons";
+  }
+}
