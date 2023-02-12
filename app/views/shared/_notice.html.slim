@@ -1,13 +1,15 @@
 .container
   .row.justify-content-center
     .col-10.col-sm-8.position-relative
-      br  
-      - [:notice, :alert, :error, :info].each do |name|
-        - if flash[name].present?
-          #notice.alert.alert-dismissible.fade.show *{ class: flash_class(name),
-                                                       role: alert}
-            
-            = flash[name].html_safe
-            
-            button.btn-close *{ data: { bs: { dismiss: 'alert' } },
-                                aria: { label: 'Close' } }
+      br
+      .notice
+        - [:success, :warning, :danger, :info].each do |name|
+          - if flash[name].present?
+            .alert.alert-dismissible.fade.show(
+                class = "alert-#{name}"
+                role = "alert")
+
+              = flash[name].html_safe
+
+              button.btn-close *{ data: { bs: { dismiss: 'alert' } },
+                                  aria: { label: 'Close' } }
