@@ -2,6 +2,8 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
+require("ruby-head-wasm-wasi/dist/browser.script.iife.js")
+
 import { application } from "./application"
 
 import EditorController from "./editor_controller"

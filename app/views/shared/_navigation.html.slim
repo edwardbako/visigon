@@ -5,6 +5,10 @@ nav.navbar.navbar-expand-sm
     button.navbar-toggler type="button" data-bs-toggle="collapse"data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded=false aria-labe="Toggle navigation"
       span.navbar-toggler-icon
     #navbar-menu.collapse.navbar-collapse
+      span.navbar-text
+        ' Construct a visibility polygon for a set of line segments with
+        b Ruby
+        |  language
       ul.navbar-nav.me-auto
           / li.nav-item
             / = link_to t("navigation.users.title"), users_url, class: "nav-link #{"active" if controller_name == "users"}"

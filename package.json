@@ -11,10 +11,13 @@
     "@hotwired/stimulus": "^3.2.1",
     "@hotwired/turbo-rails": "^7.2.5",
     "@popperjs/core": "^2.11.6",
+    "@wasmer/wasi": "^1.2.2",
+    "@wasmer/wasmfs": "^0.12.0",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.3",
     "codemirror": "^6.0.1",
     "esbuild": "^0.17.6",
+    "ruby-head-wasm-wasi": "^0.6.0",
     "sass": "^1.58.0"
   },
   "scripts": {

@@ -3,6 +3,7 @@ import { EditorState, Compartment } from "@codemirror/state"
 import { EditorView, basicSetup } from "codemirror"
 import { StreamLanguage } from "@codemirror/language"
 import { ruby } from "@codemirror/legacy-modes/mode/ruby"
+import { evaluate } from "../services/rubyVM"
 
 // Connects to data-controller="editor"
 export default class extends Controller {
@@ -24,7 +25,7 @@ class Point
 end
 
 p = Point.new(4, 5)
-puts p.coordinates
+p.coordinates
 `,
     extensions: [
       basicSetup,
@@ -40,8 +41,10 @@ puts p.coordinates
   connect() {
   }
 
-  run(e) {
-    let text = this.view.state.doc.toString()
-    this.outputTarget.innerHTML = text
+  run() {
+    let program = this.view.state.doc.toString()
+
+    this.outputTarget.innerHTML = evaluate(program)
   }
+
 }
