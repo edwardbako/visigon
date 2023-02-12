@@ -5,11 +5,13 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def error_label(method, *args)
+    if object.present?
       if object.errors[method].any?
       label method, *args
       else
       '<br>'.html_safe if object.errors.any?
       end
+    end
   end
 
   [:text_field, :text_area, :email_field, :phone_field, :date_field, :datetime_field, :password_field, :number_field].each do |meth|
@@ -37,6 +39,6 @@ class CustomFormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def validation_class(method)
-      "is-invalid" if object.errors[method].any?
+      "is-invalid" if object.present? && object.errors[method].any?
   end
 end

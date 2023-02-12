@@ -1,4 +1,15 @@
 .container
   .row
-    h1 Welcome#index
-    p Find me in app/views/welcome/index.html.slim
+    .col
+      h1 Welcome#index
+      p Find me in app/views/welcome/index.html.slim
+  .row data-controller="editor"
+    .col-6 data-editor-target="output"
+    .col-6
+      .editor.mb-2(
+          data-editor-target="parent"
+          data-action="keydown.ctrl+enter->editor#run keydown.ctrl+end->editor#snippet"
+      )
+      .text-end
+        button.btn.btn-warning data-action="editor#run" Run
+
