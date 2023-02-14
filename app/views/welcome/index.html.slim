@@ -4,8 +4,14 @@
       h1 Welcome#index
       p Find me in app/views/welcome/index.html.slim
   .row data-controller="editor"
-    .col-6 data-editor-target="output"
-    .col-6
+    .col.col-xl-5
+      .text-center
+        canvas#canvas width=500 height=500
+      hr
+      code
+        span = "#=>"
+        .output data-editor-target="output"
+    .col.col-xl-7
       .editor.mb-2(
           data-editor-target="parent"
           data-action="keydown.ctrl+enter->editor#run keydown.ctrl+end->editor#snippet"
