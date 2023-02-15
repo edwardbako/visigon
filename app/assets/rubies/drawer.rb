@@ -45,7 +45,7 @@ class Drawer
   end
 
   def update
-    puts "UPE"
+    # puts "UPE"
     if changed
       ctx.clearRect(0, 0, width, height)
       ctx.beginPath()
