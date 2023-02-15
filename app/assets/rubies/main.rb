@@ -32,7 +32,5 @@ d.elements += [
 #   d.elements << Polygon.new([[240,410+i*4],[245,410+i*4],[245,411+i*4],[240,411+i*4]])
 # end
 
-
-d.update
-
-
+window = JS.global[:window]
+window.requestAnimationFrame(lambda { |timestamp| d.update })

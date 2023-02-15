@@ -29,8 +29,8 @@ class Drawer
       observer.y =
         event[:clientY].to_i - canvas[:offsetTop].to_i + window[:scrollY].to_i
       self.changed = true
-      # puts "X: #{observer.x}, Y: #{observer.y}"
-      update
+    #   # puts "X: #{observer.x}, Y: #{observer.y}"
+    #   update
     end
 
   end
@@ -56,7 +56,7 @@ class Drawer
       draw
       self.changed = false
     end
-    # animation_frame.call(lambda { update() })
+    window.requestAnimationFrame(lambda { |timestamp| update })
   end
 
   def draw
