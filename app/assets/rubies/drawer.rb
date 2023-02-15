@@ -4,7 +4,7 @@ class Drawer
 
   BACKGROUND_COLOR = "#AAAAAA"
 
-  attr_accessor :width, :height, :observer, :elements, :changed
+  attr_accessor :width, :height, :observer, :elements, :changed, :visibility
 
   def initialize(**args)
     elements = args.delete(:elements) || defaults[:elements]
@@ -15,15 +15,15 @@ class Drawer
     end
 
     @elements = [Polygon.new([
-      [10,10],
-      [width-10, 10],
-      [width-10, height-10],
-      [10, height-10]
+      [-1,-0],
+      [width+1, -1],
+      [width+1, height+1],
+      [-1, height+10]
     ], false)] + elements
 
     @changed = true
 
-    canvas.addEventListener("click") do |event|
+    canvas.addEventListener("mousemove") do |event|
       observer.x =
         event[:clientX].to_i - canvas[:offsetLeft].to_i + window[:scrollX].to_i
       observer.y =
@@ -39,12 +39,13 @@ class Drawer
     {
       width: 500,
       height: 500,
-      observer: [209,209].to_point,
+      observer: [200,209].to_point,
       elements: []
     }
   end
 
   def update
+    puts "UPE"
     if changed
       ctx.clearRect(0, 0, width, height)
       ctx.beginPath()
@@ -59,9 +60,28 @@ class Drawer
   end
 
   def draw
-    elements.compact.each{ |element| element.draw(ctx) }
-    points.each {|point| point.draw(ctx) }
-    observer.draw(ctx)
+    # elements.compact.each{ |element| element.draw(ctx) }
+    draw_visibility
+    draw_polygons
+    draw_segments
+    # draw_points
+    draw_observer
+  end
+
+  [:polygons, :segments, :points, :lines, :observer, :visibility].each do |el|
+    define_method "draw_#{el}" do
+      if el == :observer || el == :visibility
+        send(el).draw(ctx)
+      else
+        self.send(el).compact.each { |element| element.draw(ctx) }
+      end
+    end
+  end
+
+  def visibility
+    @visib = VisibilityPolygon.new(observer, segments)
+    # puts @visib.points
+    @visib
   end
 
   def polygons
@@ -77,11 +97,12 @@ class Drawer
         element.lines
       else
       end
-    end.flatten
+    end.flatten.compact
   end
   
   def points
-    segments.map(&:points).flatten.uniq {|point| point.to_a}
+    (segments.map(&:points).flatten + visibility.points)
+      .uniq {|point| point.to_a}
   end
 
   def segments

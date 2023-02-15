@@ -1,8 +1,8 @@
 class Line
   # include Comparable
 
-  LINE_COLOR = "#854200"
-  LINE_WIDTH = 1
+  LINE_COLOR = "#0A7676"
+  LINE_WIDTH = 3
 
   attr_accessor :start, :stop
   
@@ -55,10 +55,10 @@ class Line
       u_a = numerator_a/denominator.to_f
       u_b = numerator_b/denominator.to_f
       point = Point.new(a.x*u_a + b.x*(1-u_a), a.y*u_a + b.y*(1-u_a))
-      if (0..1).include?(u_a) && (0..1).include?(u_b)
+      if inter || (0..1).include?(u_a) && (0..1).include?(u_b)
         {
           point: point,
-          value: if inter && point != start && point != stop
+          value: if inter && (point != start) && (point != stop)
                   :intersects_in
                 else
                   :intersects_out
@@ -71,16 +71,33 @@ class Line
   end
 
   def intersections(others)
-    result = points
+    result = []
+    # puts "----- Intersections on #{self}"
     others.each do |line|
       intersection = intersection_of(line)
+      # puts "#{line} #{" "*(26-line.to_s.size)} :: #{intersection}"
       result << intersection[:point] if intersection[:value] == :intersects_in 
     end
-    result.sort_by {|point| [point.x, point.y]}
+    # puts "intersections points: #{result}"
+    result.sort_by {|point| point.distance_to(start)}
+  end
+
+  def outer_intersections(others)
+    result = []
+    others.each do |line|
+      intersection = intersection_of(line)
+      result << intersection[:point] if intersection[:value] == :intersects_out
+    end
+    # puts "#{self} #{result}"
+    result.sort_by {|point| point.distance_to(start)}
+  end
+
+  def sections(others)
+    (intersections(others) + points).sort_by {|point| point.distance_to(start)}
   end
 
   def split_by_lines(others)
-    inter_points = intersections(others)
+    inter_points = sections(others)
     first = inter_points.first
     if inter_points.size > 2
       inter_points[1..-1].map do |point|
@@ -93,6 +110,10 @@ class Line
     end
   end
 
+  def same_in_with?(other)
+    intersection_of(other)[:value] == :same_in
+  end
+
   def ==(other)
     (self.start == other.start && self.stop == other.stop) ||
     (self.start == other.stop && self.stop == other.start)
@@ -100,6 +121,14 @@ class Line
 
   def <=>(other)
     self.length <=> other.length
+  end
+
+  def prolong!(direction)
+    epsilon = direction * 0.1
+    angle = stop.angle_to(start) + epsilon
+    # puts "ANGLE: #{angle}"
+    stop.x = (start.x + Math.cos(angle * Math::PI / 180) * 1000).to_i
+    stop.y = (start.y + Math.sin(angle * Math::PI / 180) * 1000).to_i
   end
 
   def direction_of(point)

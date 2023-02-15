@@ -70,10 +70,27 @@ class Point
     self.x == other.x && self.y == other.y
   end
 
+  def clone(other)
+    self.x = other.x
+    self.y = other.y
+  end
+
   alias :eql? :==
 
   def <=>(other)
     self.distance_to(Point.zero) <=> other.distance_to(Point.zero)
+  end
+
+  def x_axis
+    Line.new(self, [x+1, y])
+  end
+
+  def y_axis
+    Line.new(self, [x, y+1])
+  end
+
+  def angle_to(other)
+    Math.atan2(other.y-y, other.x-x) * 180 / Math::PI + 180
   end
 
   def self.zero
