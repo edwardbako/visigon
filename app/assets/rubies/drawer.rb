@@ -2,7 +2,7 @@ require 'js'
 
 class Drawer
 
-  BACKGROUND_COLOR = "#AAAAAA"
+  BACKGROUND_COLOR = "#CCCCCC"
 
   attr_accessor :width, :height, :observer, :elements, :changed, :visibility
 

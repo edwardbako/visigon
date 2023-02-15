@@ -1,7 +1,7 @@
 class Polygon
 
-  VISIBLE_COLOR = "#FFE7B7"
-  POLYGON_COLOR = "#FFBC84"
+  VISIBLE_COLOR = "#ECFB8E"
+  POLYGON_COLOR = "#EE86AB"
 
   attr_accessor :points, :outline, :fill, :visible
 

@@ -1,7 +1,7 @@
 class Point
   include Comparable
 
-  POINT_COLOR = "#FFE4A6"
+  POINT_COLOR = "#DF004F"
   POINT_SIZE = 5
   
   attr_accessor :x, :y
