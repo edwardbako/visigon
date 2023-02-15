@@ -2,7 +2,7 @@ class Line
   # include Comparable
 
   LINE_COLOR = "#0A7676"
-  LINE_WIDTH = 3
+  LINE_WIDTH = 2
 
   attr_accessor :start, :stop
   
