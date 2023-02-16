@@ -74,9 +74,11 @@ class Line
     result = []
     # puts "----- Intersections on #{self}"
     others.each do |line|
-      intersection = intersection_of(line)
-      # puts "#{line} #{" "*(26-line.to_s.size)} :: #{intersection}"
-      result << intersection[0] if intersection[1] == :intersects_in 
+      if intersects?(line)
+        intersection = intersection_of(line)
+        # puts "#{line} #{" "*(26-line.to_s.size)} :: #{intersection}"
+        result << intersection[0] if intersection[1] == :intersects_in 
+      end
     end
     # puts "intersections points: #{result}"
     result.sort_by {|point| point.distance_to(start)}

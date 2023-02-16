@@ -16,10 +16,8 @@ class VisibilityPolygon < Polygon
     prev = base_points.last
     base_points.each do |base|
       # puts "=============== POINT: #{base[0]}, ANGLE: #{base[0].angle_to(observer)}============"
-      
       ray.stop.clone base[0]
       int = ray.intersections(segments)
-      
       # puts "R#{ray}, Ss: #{segments.count} #{int}"
       
       if int.empty?
