@@ -1,4 +1,4 @@
-d = Drawer.new
+d = CanvasDrawer.new
 
 d.elements += [
   Polygon.new([[240,240],[260,240],[260,260],[240,260]]),

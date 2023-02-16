@@ -81,7 +81,7 @@ class VisibilityPolygon < Polygon
         result << {point: point, segment: segment}
       end
     end
-    result
+    result.uniq {|point| point.to_a}
         .sort_by {|base| base[:point].angle_to(observer)}
   end
 

@@ -12,3 +12,13 @@ export function evaluate(program) {
     return "RubyVM is not ready yet."
   }
 }
+
+export function ready() {
+  let vm = window["rubyVM"]
+
+  if (typeof vm !== 'undefined') {
+    return true
+  } else {
+    return false
+  }
+}
