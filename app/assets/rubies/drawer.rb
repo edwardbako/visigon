@@ -1,4 +1,5 @@
 class Drawer
+  include Profiler
 
   BACKGROUND_COLOR = "#CCCCCC"
 
@@ -33,20 +34,17 @@ class Drawer
 
   def update
     # puts "UPE"
-    # start = Time.now
     if changed
       clear
-      
+      visibility.update
       draw
       self.changed = false
     end
-    # stop = Time.now
-    # puts "DONE IN #{(stop-start)*1000} ms"
   end
-
+  
   def clear
   end
-
+  
   def draw
     # elements.compact.each{ |element| element.draw(ctx) }
     draw_visibility
@@ -58,14 +56,12 @@ class Drawer
 
   [:polygons, :segments, :points, :lines, :observer, :visibility].each do |el|
     define_method "draw_#{el}" do
-      puts "Ok"
+      # puts "Ok. Drawed... thought..."
     end
   end
 
   def visibility
-    @visib = VisibilityPolygon.new(observer, segments)
-    # puts @visib.points
-    @visib
+    @visib ||= VisibilityPolygon.new(observer, segments)
   end
 
   def polygons
@@ -90,11 +86,13 @@ class Drawer
   end
 
   def segments
-    segments = []
-    lines.each do |line|
-      segments += line.split_by_lines(lines)
+    @segments ||= begin
+      s = []
+      lines.each do |line|
+        s += line.split_by_lines(lines)
+      end
+      s
     end
-    segments
   end 
   
 end

@@ -13,7 +13,7 @@ class Polygon
   end
 
   def lines
-    @ponts ||= begin
+    @lines ||= begin
       last = points.last
       points.map do |point|
         line = Line.new(last, point)

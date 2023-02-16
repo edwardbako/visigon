@@ -1,3 +1,4 @@
+require_relative "./profiler"
 require_relative "./line.rb"
 require_relative "./point.rb"
 require_relative "./polygon.rb"
@@ -5,7 +6,7 @@ require_relative "./polygon/visibility_polygon.rb"
 require_relative "./drawer.rb"
 
 d = Drawer.new
-
+puts d
 d.elements += [
   Polygon.new([[240,240],[260,240],[260,260],[240,260]]),
   Polygon.new([[240,260],[260,260],[260,280],[240,280]]),
@@ -38,4 +39,8 @@ d.elements += [
   d.elements << Polygon.new([[240,410+i*4],[245,410+i*4],[245,411+i*4],[240,411+i*4]])
 end
 
-d.update
+100.times do |i|
+  d.observer.x += 1
+  d.observer.y += 1
+  d.update
+end

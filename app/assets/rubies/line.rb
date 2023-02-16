@@ -45,9 +45,9 @@ class Line
     if denominator == 0
       if ((a.x*b.y-b.x*a.y)*(d.x-c.x) - (c.x*d.y-d.x*c.y)*(b.x.-a.x) == 0 &&
           (a.x*b.y-b.x*a.y)*(d.y-c.y) - (c.x*d.y-d.x*c.y)*(b.y.-a.y) == 0)
-        {point: nil, value: inter ? :same_in : :same_out}
+        [nil, inter ? :same_in : :same_out]
       else
-        {point: nil, value: :parallel}
+        [nil, :parallel]
       end
     else
       numerator_a = (d.x-b.x)*(d.y-c.y)-(d.x-c.x)*(d.y-b.y)
@@ -56,16 +56,16 @@ class Line
       u_b = numerator_b/denominator.to_f
       point = Point.new(a.x*u_a + b.x*(1-u_a), a.y*u_a + b.y*(1-u_a))
       if inter || (0..1).include?(u_a) && (0..1).include?(u_b)
-        {
-          point: point,
-          value: if inter && (point != start) && (point != stop)
-                  :intersects_in
-                else
-                  :intersects_out
-                end 
-        }
+        [
+          point,
+          if inter && (point != start) && (point != stop)
+            :intersects_in
+          else
+            :intersects_out
+          end 
+        ]
       else
-        {point: point, value: :none}
+        [point, :none]
       end
     end
   end
@@ -76,7 +76,7 @@ class Line
     others.each do |line|
       intersection = intersection_of(line)
       # puts "#{line} #{" "*(26-line.to_s.size)} :: #{intersection}"
-      result << intersection[:point] if intersection[:value] == :intersects_in 
+      result << intersection[0] if intersection[1] == :intersects_in 
     end
     # puts "intersections points: #{result}"
     result.sort_by {|point| point.distance_to(start)}
@@ -86,7 +86,7 @@ class Line
     result = []
     others.each do |line|
       intersection = intersection_of(line)
-      result << intersection[:point] if intersection[:value] == :intersects_out
+      result << intersection[0] if intersection[1] == :intersects_out
     end
     # puts "#{self} #{result}"
     result.sort_by {|point| point.distance_to(start)}
@@ -111,7 +111,7 @@ class Line
   end
 
   def same_in_with?(other)
-    intersection_of(other)[:value] == :same_in
+    intersection_of(other)[1] == :same_in
   end
 
   def ==(other)
@@ -124,7 +124,7 @@ class Line
   end
 
   def prolong!(direction)
-    epsilon = direction * 0.1
+    epsilon = direction * 0.2
     angle = stop.angle_to(start) + epsilon
     # puts "ANGLE: #{angle}"
     stop.x = (start.x + Math.cos(angle * Math::PI / 180) * 1000).to_i
