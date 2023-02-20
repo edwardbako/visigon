@@ -1,13 +1,12 @@
 class VisibilityPolygon < Polygon
   include Profiler
 
-  attr_accessor :observer, :segments, :ray, :first, :start, :stop, :prev
+  attr_accessor :observer, :segments, :ray, :start, :stop, :prev
 
   def initialize(observer, segments)
     @observer = observer
     @segments = segments
     @ray = observer.line_to([1000, observer.y])
-    @first = [nil,nil]
     @start = Point.new(observer.x, observer.y)
     @stop = Point.new(observer.x, observer.y)
     @prev = [stop, Line.new(start, stop)]
@@ -17,16 +16,16 @@ class VisibilityPolygon < Polygon
   def construction_points
     result = []
 
-    first = base_points.first
+    b = base_points
     ray.stop.x = 1000
     ray.stop.y = observer.y
-    start.clone first[0]
-    stop.clone base_points.last[0]
+    start.clone b.first[0]
+    stop.clone b.last[0]
     prev[0] = stop
     prev[1].start = start
     prev[1].stop = stop
     
-    base_points.each do |base|
+    b.each do |base|
       ray.stop.clone base[0]
       int = ray.intersections(segments)
       
