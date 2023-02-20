@@ -15,8 +15,6 @@ class VisibilityPolygon < Polygon
   end
 
   def construction_points
-    # Logger.info self, "\n\n\n%%%%%%%%%%%%%%%%%%%%%%%% Visibility Construction start %%%%%%%%%%%%%%%%%%%%%%%%\n\n"
-
     result = []
 
     first = base_points.first
@@ -29,20 +27,10 @@ class VisibilityPolygon < Polygon
     prev[1].stop = stop
     
     base_points.each do |base|
-      # next if !result.empty? && result.last == base[0]
-      # Logger.log self, "======================================================="
-      # Logger.log self, "=========== BASE POINT: #{base[0]}, LINE: #{base[1]}"
-      # Logger.log self, "=========== PREV POINT: #{prev[0]}, SEGMENT: #{prev[1]}"
-      # Logger.log self, "=========== ANGLE: #{base[0].angle_to(observer)}"
-      # Logger.log self, "======================================================="
-      
       ray.stop.clone base[0]
       int = ray.intersections(segments)
       
-      # Logger.info self, "R---<#{ray}>--, ANGLE: #{ray.stop.angle_to(observer)}, Intersections: #{int}"
       if int.empty?
-        # Logger.info self, "````````` NO intersections in between"
-
         same = false
         if result.size == 0
           same = true if (base[1].same_in_with?(prev[1]) || base[1].active_to?(observer))
@@ -53,39 +41,21 @@ class VisibilityPolygon < Polygon
 
         same ? ray.prolong!(:forward) : ray.prolong!(:backward)
         
-        # Logger.info self, "!!!-- Point of same segment: #{base[1].intersection_of(prev[1])}.\n SEGMENT:#{base[1]},\n PREV: #{prev[1]}, SAME?: #{same}"
-        
-        # Logger.info self, "R--PRO<#{ray}>--, ANGLE: #{ray.stop.angle_to(observer)}"
-        
         prolonged_points = ray.intersections(segments)
         
-        # Logger.info self, "----- Prolonged points"
-        # Logger.info self, " #{prolonged_points}"
-        # Logger.info self, " First distance to base: #{prolonged_points.first.distance_to(base[0])}"
-
         unless prolonged_points.empty?
           if prolonged_points.first.distance_to(base[0]) <= 2
-            result << base[0] # if result.empty? || result.last != base[0]
+            result << base[0] if result.empty? || result.last != base[0]
           else
             additions = [base[0], prolonged_points.first]
             result += same ? additions : additions.reverse
           end
         end
 
-        # Logger.info self, ">>>> BEFORE \nBASE:#{base}\nPREV:#{prev}"
-        
         prev[0].clone result.last if result.size > 0
         prev[1].start.clone result.last if result.size > 0
         prev[1].stop.clone result[-2] if result.size > 1
-       
-        # Logger.info self, "<<<< AFTER \nBASE:#{base}\nPREV:#{prev}"
-
-      else
-        # Logger.info self, "----------------------------------------NEXT-->>>"
       end
-
-      # Logger.info self, "\n\nRES: #{result}\n\n"
-      
     end
     result
   end

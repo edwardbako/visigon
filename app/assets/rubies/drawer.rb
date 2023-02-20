@@ -22,7 +22,6 @@ class Drawer
     ], false)] + elements
 
     @changed = true
-    Logger.log self, "Initialized and wisigon is #{window[:visigon]}"
   end
 
   def defaults

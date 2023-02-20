@@ -1,7 +1,5 @@
 window = JS.global[:window]
 
-Logger.level = :warn
-
 drawer = CanvasDrawer.new
 
 drawer.elements += [
@@ -37,7 +35,5 @@ drawer.elements += [
 # end
 
 drawer.observer = [100,350].to_point
-
-Logger.log(self, "Initialized")
 
 drawer.update

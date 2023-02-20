@@ -11,7 +11,6 @@ class CanvasDrawer < Drawer
       observer.y =
         event[:clientY].to_f - canvas[:offsetTop].to_f + window[:scrollY].to_f
       self.changed = true
-      # Logger.warn self, "X: #{observer.x}, Y: #{observer.y}"
     end
   end
 
