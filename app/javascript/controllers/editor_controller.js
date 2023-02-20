@@ -61,7 +61,7 @@ drawer.update
   })
 
   connect() {
-    this.run()
+    // this.run()
   }
 
   run() {
