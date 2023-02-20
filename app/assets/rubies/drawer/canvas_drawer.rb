@@ -1,18 +1,17 @@
-require 'js'
-
 class CanvasDrawer < Drawer
+  include JsPrimitives
 
   def initialize
     super
 
+    window.cancelAnimationFrame(window[:visigon])
     canvas.addEventListener("mousemove") do |event|
       observer.x =
-        event[:clientX].to_i - canvas[:offsetLeft].to_i + window[:scrollX].to_i
+        event[:clientX].to_f - canvas[:offsetLeft].to_f + window[:scrollX].to_f
       observer.y =
-        event[:clientY].to_i - canvas[:offsetTop].to_i + window[:scrollY].to_i
+        event[:clientY].to_f - canvas[:offsetTop].to_f + window[:scrollY].to_f
       self.changed = true
-    #   # puts "X: #{observer.x}, Y: #{observer.y}"
-    #   update
+      # Logger.warn self, "X: #{observer.x}, Y: #{observer.y}"
     end
   end
 
@@ -28,7 +27,7 @@ class CanvasDrawer < Drawer
 
   def update
     super
-    window.requestAnimationFrame(lambda { |timestamp| update })
+    window[:visigon] = window.requestAnimationFrame(lambda { |timestamp| update })
   end
 
   def clear
@@ -39,22 +38,5 @@ class CanvasDrawer < Drawer
     ctx.fill()
   end
 
-  private
-
-  def window
-    @window ||= JS.global[:window]
-  end
-
-  def document
-    @document ||= JS.global[:document]
-  end
-  
-  def canvas
-    @canvas ||= document.getElementById('canvas')
-  end
-  
-  def ctx
-    @ctx = canvas.getContext("2d")
-  end
 
 end

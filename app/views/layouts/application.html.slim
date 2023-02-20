@@ -9,7 +9,9 @@ html
     = stylesheet_link_tag "application", "data-turbo-track": "reload"
     = javascript_include_tag "application", "data-turbo-track": "reload", defer: true
 
+    script type="text/ruby" src="assets/js_primitives.rb"
     script type="text/ruby" src="assets/profiler.rb"
+    script type="text/ruby" src="assets/logger.rb"
     script type="text/ruby" src="assets/point.rb"
     script type="text/ruby" src="assets/line.rb"
     script type="text/ruby" src="assets/polygon.rb"

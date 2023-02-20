@@ -1,6 +1,8 @@
 class Line
   # include Comparable
 
+  class WrongDirctionError < StandardError; end
+
   LINE_COLOR = "#849A00"
   LINE_WIDTH = 2
 
@@ -18,6 +20,15 @@ class Line
   def points
     [start, stop]
   end
+
+  def active_to?(observer)
+    a1 = start.angle_to(observer)
+		a2 = stop.angle_to(observer)
+		active = false
+		active = true if ((0..180).include?(a1) && (180..360).include?(a2) && a2 - a1 > 180)
+		active = true if ((0..180).include?(a2) && (180..360).include?(a1) && a1 - a2 > 180)
+    active
+  end 
 
   def intersects?(other)
     d1 = start.direction_to other
@@ -42,6 +53,7 @@ class Line
     denominator=(d.y-c.y)*(a.x-b.x)-(d.x-c.x)*(a.y-b.y)
     inter = intersects?(other)
 
+    # puts "### denominator: #{denominator} for #{self} :: #{other}"
     if denominator == 0
       if ((a.x*b.y-b.x*a.y)*(d.x-c.x) - (c.x*d.y-d.x*c.y)*(b.x.-a.x) == 0 &&
           (a.x*b.y-b.x*a.y)*(d.y-c.y) - (c.x*d.y-d.x*c.y)*(b.y.-a.y) == 0)
@@ -54,8 +66,9 @@ class Line
       numerator_b = (a.x-b.x)*(d.y-b.y)-(d.x-b.x)*(d.y-b.y)
       u_a = numerator_a/denominator.to_f
       u_b = numerator_b/denominator.to_f
-      point = Point.new(a.x*u_a + b.x*(1-u_a), a.y*u_a + b.y*(1-u_a))
+
       if inter || (0..1).include?(u_a) && (0..1).include?(u_b)
+        point = Point.new((a.x*u_a + b.x*(1-u_a)).round, (a.y*u_a + b.y*(1-u_a)).round)
         [
           point,
           if inter && (point != start) && (point != stop)
@@ -65,7 +78,7 @@ class Line
           end 
         ]
       else
-        [point, :none]
+        [nil, :none]
       end
     end
   end
@@ -126,11 +139,20 @@ class Line
   end
 
   def prolong!(direction)
-    epsilon = direction * 0.2
+    base = 0.01
+    epsilon = case direction
+              when :forward
+                base
+              when :backward
+                -base
+              else
+                raise WrongDirctionError, "Direction should either be :forward or :backward"
+              end
+
     angle = stop.angle_to(start) + epsilon
     # puts "ANGLE: #{angle}"
-    stop.x = (start.x + Math.cos(angle * Math::PI / 180) * 1000).to_i
-    stop.y = (start.y + Math.sin(angle * Math::PI / 180) * 1000).to_i
+    stop.x = (start.x + Math.cos(angle * Math::PI / 180) * 1000)
+    stop.y = (start.y + Math.sin(angle * Math::PI / 180) * 1000)
   end
 
   def direction_of(point)

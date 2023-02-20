@@ -14,6 +14,7 @@ upe = function (timstamp) {
   start = start + step
   stop = start + 3 / 5 * Math.PI + Math.sin(start)
 
+  set_canvas_size()
 
   ctx.clearRect(0, 0, 500, 500)
   ctx.beginPath()
@@ -23,6 +24,21 @@ upe = function (timstamp) {
 
   if (!ready()) {
     window.requestAnimationFrame(upe)
+  }
+}
+
+set_canvas_size = function () {
+  const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+
+  if (vw < 567) {
+    let width = vw * 0.9;
+    ctx.canvas.width = width;
+    ctx.canvas.height = width;
+    x = width / 2;
+    y = width / 2;
+  } else {
+    ctx.canvas.width = 500;
+    ctx.canvas.height = 500;
   }
 }
 

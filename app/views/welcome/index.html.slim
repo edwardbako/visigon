@@ -2,11 +2,12 @@
   .row
     .col
       h1 Welcome#index
-      p Let's play around
+      p
+       ' Let's play around. Just put your code in editor and see instant result. Starter example is provided.
   .row data-controller="editor"
     .col.col-xl-5
       .text-center
-        canvas#canvas width=500 height=500
+        canvas#canvas
       hr
       code
         span = "#=>"
@@ -17,5 +18,5 @@
           data-action="keydown.ctrl+enter->editor#run keydown.ctrl+end->editor#snippet"
       )
       .text-end
-        button.btn.btn-outline-success data-action="editor#run" Run
+        button.mb-5.btn.btn-outline-success data-action="editor#run" Run
 

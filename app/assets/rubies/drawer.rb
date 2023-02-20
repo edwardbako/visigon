@@ -1,5 +1,6 @@
 class Drawer
   include Profiler
+  include JsPrimitives
 
   BACKGROUND_COLOR = "#CCCCCC"
 
@@ -17,23 +18,23 @@ class Drawer
       [-1,-0],
       [width+1, -1],
       [width+1, height+1],
-      [-1, height+10]
+      [-1, height+1]
     ], false)] + elements
 
     @changed = true
+    Logger.log self, "Initialized and wisigon is #{window[:visigon]}"
   end
 
   def defaults
     {
       width: 500,
       height: 500,
-      observer: [200,209].to_point,
+      observer: [214, 154].to_point,
       elements: []
     }
   end
 
   def update
-    # puts "UPE"
     if changed
       clear
       visibility.update
@@ -61,15 +62,15 @@ class Drawer
   end
 
   def visibility
-    @visib ||= VisibilityPolygon.new(observer, segments)
+    @visibility ||= VisibilityPolygon.new(observer, segments)
   end
 
   def polygons
-    elements.select {|element| element.is_a? Polygon}
+    @polygons ||= elements.select {|element| element.is_a? Polygon}
   end
 
   def lines
-    elements.map do |element|
+    @lines ||= elements.map do |element|
       case 
       when element.is_a?(Line)
         element
@@ -81,7 +82,7 @@ class Drawer
   end
   
   def points
-    (segments.map(&:points).flatten + visibility.points)
+    @points ||= (segments.map(&:points).flatten + visibility.points)
       .uniq {|point| point.to_a}
   end
 

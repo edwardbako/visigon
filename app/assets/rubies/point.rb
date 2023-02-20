@@ -7,8 +7,8 @@ class Point
   attr_accessor :x, :y
   
   def initialize(x, y)
-    @x = x.to_i
-    @y = y.to_i
+    @x = x
+    @y = y
   end
 
   def distance_to(other)
@@ -50,7 +50,7 @@ class Point
   end
 
   def to_s
-    "(#{x.to_i},#{y.to_i})"
+    "(#{x.round(2)},#{y.round(2)})"
   end
 
   def to_a
@@ -59,7 +59,7 @@ class Point
 
   def draw(drawer)
     drawer.beginPath()
-    drawer.arc(x.to_i, y.to_i, POINT_SIZE, 0, JS.eval("return 2 * Math.PI"), true)
+    drawer.arc(x.round, y.round, POINT_SIZE, 0, JS.eval("return 2 * Math.PI"), true)
     drawer[:fillStyle] = POINT_COLOR
     drawer.fill()
     drawer[:strokeStyle] = Line::LINE_COLOR
@@ -82,11 +82,11 @@ class Point
   end
 
   def x_axis
-    Line.new(self, [x+1, y])
+    @x_axis ||= Line.new(self, [x+1, y])
   end
 
   def y_axis
-    Line.new(self, [x, y+1])
+    @y_axis ||= Line.new(self, [x, y+1])
   end
 
   def angle_to(other)
