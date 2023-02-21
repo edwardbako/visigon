@@ -67,7 +67,11 @@ class Point
   end
 
   def ==(other)
-    self.x == other.x && self.y == other.y
+    (self.x - other.x).abs < epsilon && (self.y - other.y).abs < epsilon
+  end
+
+  def epsilon
+    0.0000001
   end
 
   def clone(other)
@@ -90,8 +94,21 @@ class Point
   end
 
   def angle_to(other)
-    Math.atan2(other.y-y, other.x-x) * 180 / Math::PI + 180
+    Math.atan2(other.y-y, other.x-x) * 180 / Math::PI
   end
+
+  def angle2_to(b, c)
+    a1 = angle_to b
+    a2 = b.angle_to c
+    a3 = a1 - a2
+    if a3.negative?
+      a3 += 360
+    elsif a3 > 360
+      a3 -= 360
+    end
+    a3
+  end
+
 
   def self.zero
     @zero ||= new(0,0)

@@ -25,8 +25,8 @@ class Line
     a1 = start.angle_to(observer)
 		a2 = stop.angle_to(observer)
 		active = false
-		active = true if ((0..180).include?(a1) && (180..360).include?(a2) && a2 - a1 > 180)
-		active = true if ((0..180).include?(a2) && (180..360).include?(a1) && a1 - a2 > 180)
+		active = true if ((-180..0).include?(a1) && (0..180).include?(a2) && a2 - a1 > 180)
+		active = true if ((-180..0).include?(a2) && (0..180).include?(a1) && a1 - a2 > 180)
     active
   end 
 
@@ -127,6 +127,30 @@ class Line
 
   def same_in_with?(other)
     intersection_of(other)[1] == :same_in
+  end
+
+  def intersect_lines(other)
+    a1 = start
+    a2 = stop
+    b1 = other.start
+    b2 = other.stop
+
+    dbx = b2.x - b1.x
+    dby = b2.y - b1.y
+    dax = a2.x - a1.x
+    day = a2.y - a1.y
+
+    u_b = dby * dax - dbx * day
+    if u_b != 0
+      ua = (dbx * (a1.y - b1.y) - dby * (a1.x - b1.x)) / u_b.to_f
+      [a1.x - ua * -dax, a1.y - ua * -day].to_point
+    else
+      nil
+    end
+  end
+
+  def not_same_to(point)
+    point == start ? stop : start
   end
 
   def ==(other)
