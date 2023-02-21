@@ -1,4 +1,3 @@
-require 'date'
 module Profiler
   def profile(&block)
     start = Time.now.to_f

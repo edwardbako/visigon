@@ -171,6 +171,10 @@ class Line
     "#{start} - #{stop}"
   end
 
+  def to_a
+    points.map(&:to_a)
+  end
+
   def draw(drawer)
     drawer.beginPath()
     

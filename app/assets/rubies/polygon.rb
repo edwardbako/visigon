@@ -33,9 +33,9 @@ class Polygon
     if fill
       first = points.first
 
-      drawer.moveTo(first.x, first.y)
-      points[1..-1].each { |point| drawer.lineTo(point.x, point.y) }
-      drawer.lineTo(first.x, first.y)
+      drawer.moveTo(first.x.round, first.y.round)
+      points[1..-1].each { |point| drawer.lineTo(point.x.round, point.y.round) }
+      drawer.lineTo(first.x.round, first.y.round)
       
       drawer[:fillStyle] = visible ? VISIBLE_COLOR : POLYGON_COLOR
       drawer.fill()
