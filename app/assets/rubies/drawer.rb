@@ -1,6 +1,5 @@
 class Drawer
   include Profiler
-  include JsPrimitives
 
   BACKGROUND_COLOR = "#CCCCCC"
 

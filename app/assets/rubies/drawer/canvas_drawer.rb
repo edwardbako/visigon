@@ -5,11 +5,12 @@ class CanvasDrawer < Drawer
     super
 
     window.cancelAnimationFrame(window[:visigon])
-    canvas.addEventListener("mousemove") do |event|
+    window[:canvas_hammer].on("pan tap") do |event|
+      # puts event[:srcEvent][:clientX]
       observer.x =
-        event[:clientX].to_f - canvas[:offsetLeft].to_f + window[:scrollX].to_f
+        event[:srcEvent][:clientX].to_f - canvas[:offsetLeft].to_f + window[:scrollX].to_f
       observer.y =
-        event[:clientY].to_f - canvas[:offsetTop].to_f + window[:scrollY].to_f
+        event[:srcEvent][:clientY].to_f - canvas[:offsetTop].to_f + window[:scrollY].to_f
       self.changed = true
     end
   end

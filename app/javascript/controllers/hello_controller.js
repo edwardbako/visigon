@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import { update } from "immutable"
 import { ready } from "../services/rubyVM"
+import { Manager } from "hammerjs"
 
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
@@ -15,6 +16,7 @@ upe = function (timstamp) {
   stop = start + 3 / 5 * Math.PI + Math.sin(start)
 
   set_canvas_size()
+  create_hammer()
 
   ctx.clearRect(0, 0, 500, 500)
   ctx.beginPath()
@@ -40,6 +42,14 @@ set_canvas_size = function () {
     ctx.canvas.width = 500;
     ctx.canvas.height = 500;
   }
+}
+
+create_hammer = function () {
+  window.canvas_hammer = new Hammer.Manager(canvas);
+  pan = new Hammer.Pan();
+  window.canvas_hammer.add(pan);
+  tap = new Hammer.Tap();
+  window.canvas_hammer.add(tap);
 }
 
 window.requestAnimationFrame(upe)
